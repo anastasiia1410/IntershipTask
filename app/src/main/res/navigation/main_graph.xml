@@ -1,0 +1,35 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/navigationFragment">
+    <fragment
+        android:id="@+id/navigationFragment"
+        android:name="com.example.intershiptask.screens.navigation.NavigationFragment"
+        android:label="NavigationFragment" >
+        <action
+            android:id="@+id/action_navigationFragment_to_itemsListFragment"
+            app:destination="@id/itemsListFragment" />
+        <action
+            android:id="@+id/action_navigationFragment_to_detailItemFragment"
+            app:destination="@id/detailItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/itemsListFragment"
+        android:name="com.example.intershiptask.screens.items.ItemsListFragment"
+        android:label="ItemsListFragment"
+        tools:layout="@layout/fragment_list_items">
+        <action
+            android:id="@+id/action_itemsListFragment_to_detailItemFragment"
+            app:destination="@id/detailItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailItemFragment"
+        android:name="com.example.intershiptask.screens.detail.DetailItemFragment"
+        android:label="DetailItemFragment"
+        tools:layout="@layout/fragment_detail_item">
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+</navigation>
