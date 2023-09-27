@@ -33,18 +33,22 @@ class ItemsListFragment : BaseFragment<FragmentListItemsBinding>(), ItemsView {
             rvRecycler.adapter = adapter
         }
 
-        adapter.submitList(presenter.itemList)
+        presenter.attachView(this)
+        showItemsList()
 
         adapter.onItemClick = { item ->
-            handlerClick(item)
+            presenter.onItemClick(item)
         }
+    }
+
+    override fun showItemsList() {
+        adapter.submitList(presenter.itemList)
     }
 
     override fun handlerClick(item: Item) {
         val updatedNotification =
             createNotification(requireContext(), item.id)
         requireContext().notificationManager.notify(NOTIFICATION_ID, updatedNotification)
-        presenter.saveId(item.id)
         val action =
             ItemsListFragmentDirections.actionItemsListFragmentToDetailItemFragment(item.id)
         findNavController().navigate(action)

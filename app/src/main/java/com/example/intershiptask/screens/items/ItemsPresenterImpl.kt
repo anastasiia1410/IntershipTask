@@ -6,7 +6,14 @@ import com.example.intershiptask.screens.entity.Item
 class ItemsPresenterImpl(private val preference: AppPreference) : ItemsPresenter {
 
     override val itemList = Item.getItems()
-    override fun saveId(id: Int) {
-        preference.saveId(id)
+
+    private lateinit var view: ItemsView
+    override fun attachView(view: ItemsView) {
+        this.view = view
+    }
+
+    override fun onItemClick(item: Item) {
+        preference.saveId(item.id)
+        view.handlerClick(item)
     }
 }

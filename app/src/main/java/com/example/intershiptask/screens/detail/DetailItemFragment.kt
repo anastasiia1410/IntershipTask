@@ -26,8 +26,8 @@ class DetailItemFragment : BaseFragment<FragmentDetailItemBinding>(), DetailView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val id = args.id
-        val item = presenter.getItemById(id)
-        setViews(item)
+        presenter.attachView(this)
+        presenter.getItemById(id)
     }
 
     override fun setViews(item: Item?) {

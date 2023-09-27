@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity(), MainView {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        presenter.attachView(this)
         requestPermissionAndStartService()
     }
 
@@ -32,7 +33,6 @@ class MainActivity : AppCompatActivity(), MainView {
         super.onNewIntent(intent)
         if (intent?.action == ACTIVITY_ACTION) {
             presenter.setIdValue()
-            navigate(presenter.idValue)
         }
     }
 

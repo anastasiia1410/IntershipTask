@@ -4,5 +4,7 @@ import com.example.intershiptask.screens.entity.Item
 
 interface ItemsPresenter {
     val itemList : List<Item>
-    fun saveId(id: Int)
+    fun attachView(view: ItemsView)
+
+    fun onItemClick(item: Item)
 }
