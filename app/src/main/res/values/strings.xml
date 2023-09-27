@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">IntershipTask</string>
-    <string name="name"> name: Name %1d</string>
-    <string name="id">id : Id %1d</string>
-    <string name="description">description : Description %1d</string>
+    <string name="name"> name: %1s</string>
+    <string name="id">id : %1d</string>
+    <string name="description">description : %1s</string>
+    <string name="title">Notification title</string>
+    <string name="choose_item">Choose item with id %1d</string>
+    <string name="choose_nothing">Don\'t choose any item yet</string>
 </resources>

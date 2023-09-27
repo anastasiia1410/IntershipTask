@@ -3,9 +3,9 @@ package com.example.intershiptask.core.preferences
 
 interface AppPreference {
 
-    val id : Int?
+    val id : Int
 
-    fun saveId(id : Int?)
+    fun saveId(id : Int)
 
 }
 

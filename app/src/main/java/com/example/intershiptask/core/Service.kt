@@ -43,11 +43,8 @@ class Service : LifecycleService() {
     }
 
     private fun startForegroundService() {
-        val notification = if (preference.id == -1) {
-            createNotification(this@Service, -1, "Don't choose any item yet")
-        } else {
-            createNotification(this@Service, preference.id!!, "Chose item with id ${preference.id}")
-        }
+        val notification =
+            createNotification(this@Service, preference.id)
 
         if (ActivityCompat.checkSelfPermission(
                 this,

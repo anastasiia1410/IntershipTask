@@ -8,6 +8,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.intershiptask.R
 import com.example.intershiptask.core.BaseFragment
 import com.example.intershiptask.databinding.FragmentDetailItemBinding
+import com.example.intershiptask.screens.entity.Item
 
 class DetailItemFragment : BaseFragment<FragmentDetailItemBinding>() {
     private val args by navArgs<DetailItemFragmentArgs>()
@@ -23,10 +24,13 @@ class DetailItemFragment : BaseFragment<FragmentDetailItemBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val id = args.id
+        val item = getItemById(id)
         with(binding) {
-            tvId.text = getString(R.string.id, id)
-            tvName.text = getString(R.string.name, id)
-            tvDescription.text = getString(R.string.description, id)
+            tvId.text = getString(R.string.id, item?.id)
+            tvName.text = getString(R.string.name, item?.name)
+            tvDescription.text = getString(R.string.description, item?.description)
         }
     }
+
+    private fun getItemById(id: Int) = Item.getItems().find { it.id == id }
 }

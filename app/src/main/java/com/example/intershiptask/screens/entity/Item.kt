@@ -7,12 +7,9 @@ import kotlinx.parcelize.Parcelize
 data class Item(val id: Int, val name: String, val description: String) : Parcelable {
     companion object {
         fun getItems(): List<Item> {
-            val items = mutableListOf<Item>()
-            for (i in 0 until 20) {
-                val item = Item(i, "Name $i", "Description $i")
-                items.add(item)
+            return List(size = 20) {
+                Item(it, "Name $it", "Description $it")
             }
-            return items
         }
     }
 }

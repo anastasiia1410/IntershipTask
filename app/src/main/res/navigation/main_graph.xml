@@ -1,19 +1,9 @@
+<!--suppress NavigationFile -->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/navigationFragment">
-    <fragment
-        android:id="@+id/navigationFragment"
-        android:name="com.example.intershiptask.screens.navigation.NavigationFragment"
-        android:label="NavigationFragment" >
-        <action
-            android:id="@+id/action_navigationFragment_to_itemsListFragment"
-            app:destination="@id/itemsListFragment" />
-        <action
-            android:id="@+id/action_navigationFragment_to_detailItemFragment"
-            app:destination="@id/detailItemFragment" />
-    </fragment>
+    app:startDestination="@id/itemsListFragment">
     <fragment
         android:id="@+id/itemsListFragment"
         android:name="com.example.intershiptask.screens.items.ItemsListFragment"
