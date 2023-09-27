@@ -31,6 +31,7 @@ class DetailItemFragment : BaseFragment<FragmentDetailItemBinding>() {
             tvDescription.text = getString(R.string.description, item?.description)
         }
     }
-
-    private fun getItemById(id: Int) = Item.getItems().find { it.id == id }
+    private fun getItemById(id: Int): Item? {
+        return Item.getItems().find { it.id == id }
+    }
 }

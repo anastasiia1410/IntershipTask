@@ -1,17 +1,19 @@
 package com.example.intershiptask.screens.main
 
+import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import com.example.intershiptask.R
+import com.example.intershiptask.core.Service
 import com.example.intershiptask.databinding.ActivityMainBinding
 import com.example.intershiptask.screens.items.ItemsListFragmentDirections
 import com.example.intershiptask.utils.ACTIVITY_ACTION
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -26,25 +28,29 @@ class MainActivity : AppCompatActivity() {
         val requestPermissionLauncher: ActivityResultLauncher<String> =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
                 if (result) {
-                    viewModel.startServiceIfNeeded(this)
+                    if (!viewModel.isServiceRunning) {
+                        ContextCompat.startForegroundService(
+                            this,
+                            Service.createIntent(
+                                this,
+                                Service.ACTION_START_FOREGROUND_SERVICE
+                            )
+                        )
+                        viewModel.isServiceRunning = true
+                    }
                 }
             }
 
-        viewModel.checkAndRequestPermissions(requestPermissionLauncher)
+        if (!viewModel.isServiceRunning && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         if (intent?.action == ACTIVITY_ACTION) {
-            viewModel.handleNotificationClick()
-            lifecycleScope.launch {
-                viewModel.isNotificationClick.collect {
-                    if (it) {
-                        val id = viewModel.idFlow.value
-                        navigate(id)
-                    }
-                }
-            }
+            viewModel.setIdValue()
+            navigate(viewModel.idValue)
         }
     }
 
