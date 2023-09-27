@@ -6,7 +6,8 @@ import com.example.intershiptask.core.App
 import com.example.intershiptask.core.preferences.AppPreference
 import com.example.intershiptask.core.preferences.PreferenceImpl
 import com.example.intershiptask.screens.detail.DetailViewModel
-import com.example.intershiptask.screens.items.ItemsViewModel
+import com.example.intershiptask.screens.items.ItemsPresenter
+import com.example.intershiptask.screens.items.ItemsPresenterImpl
 import com.example.intershiptask.screens.main.MainPresenter
 import com.example.intershiptask.screens.main.MainPresenterImpl
 import org.koin.android.ext.koin.androidContext
@@ -25,7 +26,7 @@ private val appModule = module {
     }
     single<AppPreference> { PreferenceImpl(get()) }
     factory<MainPresenter> { MainPresenterImpl(get()) }
-    viewModel { ItemsViewModel(get()) }
+    factory<ItemsPresenter>{ItemsPresenterImpl(get())}
     viewModel { DetailViewModel() }
 }
 

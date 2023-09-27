@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.intershiptask.core.BaseFragment
 import com.example.intershiptask.core.Service.Companion.NOTIFICATION_ID
 import com.example.intershiptask.databinding.FragmentListItemsBinding
+import com.example.intershiptask.screens.entity.Item
 import com.example.intershiptask.utils.createNotification
 import com.example.intershiptask.utils.notificationManager
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.inject
 
-class ItemsListFragment : BaseFragment<FragmentListItemsBinding>() {
-    private val viewModel by viewModel<ItemsViewModel>()
+class ItemsListFragment : BaseFragment<FragmentListItemsBinding>(), ItemsView {
+    private val presenter by inject<ItemsPresenter>()
     private val adapter by lazy { ItemsAdapter() }
 
     override fun createBinding(
@@ -32,17 +33,21 @@ class ItemsListFragment : BaseFragment<FragmentListItemsBinding>() {
             rvRecycler.adapter = adapter
         }
 
-        adapter.submitList(viewModel.itemList)
+        adapter.submitList(presenter.itemList)
 
         adapter.onItemClick = { item ->
-            val updatedNotification =
-                createNotification(requireContext(), item.id)
-            requireContext().notificationManager.notify(NOTIFICATION_ID, updatedNotification)
-            viewModel.saveId(item.id)
-            val action =
-                ItemsListFragmentDirections.actionItemsListFragmentToDetailItemFragment(item.id)
-            findNavController().navigate(action)
+            handlerClick(item)
         }
+    }
+
+    override fun handlerClick(item: Item) {
+        val updatedNotification =
+            createNotification(requireContext(), item.id)
+        requireContext().notificationManager.notify(NOTIFICATION_ID, updatedNotification)
+        presenter.saveId(item.id)
+        val action =
+            ItemsListFragmentDirections.actionItemsListFragmentToDetailItemFragment(item.id)
+        findNavController().navigate(action)
     }
 }
 
