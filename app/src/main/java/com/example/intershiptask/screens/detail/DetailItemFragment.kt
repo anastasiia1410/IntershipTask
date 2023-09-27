@@ -8,9 +8,10 @@ import androidx.navigation.fragment.navArgs
 import com.example.intershiptask.R
 import com.example.intershiptask.core.BaseFragment
 import com.example.intershiptask.databinding.FragmentDetailItemBinding
-import com.example.intershiptask.screens.entity.Item
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailItemFragment : BaseFragment<FragmentDetailItemBinding>() {
+    private val viewModel by viewModel<DetailViewModel>()
     private val args by navArgs<DetailItemFragmentArgs>()
 
     override fun createBinding(
@@ -24,14 +25,11 @@ class DetailItemFragment : BaseFragment<FragmentDetailItemBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val id = args.id
-        val item = getItemById(id)
+        val item = viewModel.getItemById(id)
         with(binding) {
             tvId.text = getString(R.string.id, item?.id)
             tvName.text = getString(R.string.name, item?.name)
             tvDescription.text = getString(R.string.description, item?.description)
         }
-    }
-    private fun getItemById(id: Int): Item? {
-        return Item.getItems().find { it.id == id }
     }
 }

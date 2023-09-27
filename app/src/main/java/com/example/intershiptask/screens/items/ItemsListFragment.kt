@@ -30,10 +30,9 @@ class ItemsListFragment : BaseFragment<FragmentListItemsBinding>() {
         with(binding) {
             rvRecycler.layoutManager = LinearLayoutManager(requireContext())
             rvRecycler.adapter = adapter
-            rvRecycler.setHasFixedSize(true)
         }
 
-        adapter.submitList(viewModel.items)
+        adapter.submitList(viewModel.itemList)
 
         adapter.onItemClick = { item ->
             val updatedNotification =

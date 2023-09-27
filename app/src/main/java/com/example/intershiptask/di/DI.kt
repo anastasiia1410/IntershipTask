@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.example.intershiptask.core.App
 import com.example.intershiptask.core.preferences.AppPreference
 import com.example.intershiptask.core.preferences.PreferenceImpl
+import com.example.intershiptask.screens.detail.DetailViewModel
 import com.example.intershiptask.screens.items.ItemsViewModel
 import com.example.intershiptask.screens.main.MainViewModel
 import org.koin.android.ext.koin.androidContext
@@ -24,6 +25,7 @@ private val appModule = module {
 
     viewModel { MainViewModel(get()) }
     viewModel { ItemsViewModel(get()) }
+    viewModel {DetailViewModel()}
 }
 
 fun App.initKoin() {
