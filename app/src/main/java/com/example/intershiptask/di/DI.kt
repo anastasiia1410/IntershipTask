@@ -7,11 +7,13 @@ import com.example.intershiptask.core.preferences.AppPreference
 import com.example.intershiptask.core.preferences.PreferenceImpl
 import com.example.intershiptask.screens.detail.DetailViewModel
 import com.example.intershiptask.screens.items.ItemsViewModel
-import com.example.intershiptask.screens.main.MainViewModel
+import com.example.intershiptask.screens.main.MainPresenter
+import com.example.intershiptask.screens.main.MainPresenterImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
+
 private const val APP_PREFERENCE_NAME = "app.preferences"
 
 private val appModule = module {
@@ -22,10 +24,9 @@ private val appModule = module {
         )
     }
     single<AppPreference> { PreferenceImpl(get()) }
-
-    viewModel { MainViewModel(get()) }
+    factory<MainPresenter> { MainPresenterImpl(get()) }
     viewModel { ItemsViewModel(get()) }
-    viewModel {DetailViewModel()}
+    viewModel { DetailViewModel() }
 }
 
 fun App.initKoin() {

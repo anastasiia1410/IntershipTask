@@ -14,21 +14,33 @@ import com.example.intershiptask.core.Service
 import com.example.intershiptask.databinding.ActivityMainBinding
 import com.example.intershiptask.screens.items.ItemsListFragmentDirections
 import com.example.intershiptask.utils.ACTIVITY_ACTION
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.inject
 
 
-class MainActivity : AppCompatActivity() {
-    private val viewModel by viewModel<MainViewModel>()
+class MainActivity : AppCompatActivity(), MainView {
     private lateinit var binding: ActivityMainBinding
+    private val presenter by inject<MainPresenter>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        requestPermissionAndStartService()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent?.action == ACTIVITY_ACTION) {
+            presenter.setIdValue()
+            navigate(presenter.idValue)
+        }
+    }
+
+    override fun requestPermissionAndStartService() {
         val requestPermissionLauncher: ActivityResultLauncher<String> =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
                 if (result) {
-                    if (!viewModel.isServiceRunning) {
+                    if (!presenter.isServiceRunning) {
                         ContextCompat.startForegroundService(
                             this,
                             Service.createIntent(
@@ -36,25 +48,17 @@ class MainActivity : AppCompatActivity() {
                                 Service.ACTION_START_FOREGROUND_SERVICE
                             )
                         )
-                        viewModel.isServiceRunning = true
+                        presenter.isServiceRunning = true
                     }
                 }
             }
 
-        if (!viewModel.isServiceRunning && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (!presenter.isServiceRunning && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        if (intent?.action == ACTIVITY_ACTION) {
-            viewModel.setIdValue()
-            navigate(viewModel.idValue)
-        }
-    }
-
-    private fun navigate(id: Int) {
+    override fun navigate(id: Int) {
         val navController = findNavController(R.id.fcMain)
         if (id != -1) {
             val action =
