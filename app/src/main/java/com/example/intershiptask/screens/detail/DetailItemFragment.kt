@@ -8,10 +8,11 @@ import androidx.navigation.fragment.navArgs
 import com.example.intershiptask.R
 import com.example.intershiptask.core.BaseFragment
 import com.example.intershiptask.databinding.FragmentDetailItemBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.example.intershiptask.screens.entity.Item
+import org.koin.android.ext.android.inject
 
-class DetailItemFragment : BaseFragment<FragmentDetailItemBinding>() {
-    private val viewModel by viewModel<DetailViewModel>()
+class DetailItemFragment : BaseFragment<FragmentDetailItemBinding>(), DetailView {
+    private val presenter by inject<DetailPresenter>()
     private val args by navArgs<DetailItemFragmentArgs>()
 
     override fun createBinding(
@@ -25,7 +26,11 @@ class DetailItemFragment : BaseFragment<FragmentDetailItemBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val id = args.id
-        val item = viewModel.getItemById(id)
+        val item = presenter.getItemById(id)
+        setViews(item)
+    }
+
+    override fun setViews(item: Item?) {
         with(binding) {
             tvId.text = getString(R.string.id, item?.id)
             tvName.text = getString(R.string.name, item?.name)

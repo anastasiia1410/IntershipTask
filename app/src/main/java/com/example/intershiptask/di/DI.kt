@@ -5,13 +5,13 @@ import android.content.SharedPreferences
 import com.example.intershiptask.core.App
 import com.example.intershiptask.core.preferences.AppPreference
 import com.example.intershiptask.core.preferences.PreferenceImpl
-import com.example.intershiptask.screens.detail.DetailViewModel
+import com.example.intershiptask.screens.detail.DetailPresenter
+import com.example.intershiptask.screens.detail.DetailPresenterImpl
 import com.example.intershiptask.screens.items.ItemsPresenter
 import com.example.intershiptask.screens.items.ItemsPresenterImpl
 import com.example.intershiptask.screens.main.MainPresenter
 import com.example.intershiptask.screens.main.MainPresenterImpl
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
@@ -26,8 +26,8 @@ private val appModule = module {
     }
     single<AppPreference> { PreferenceImpl(get()) }
     factory<MainPresenter> { MainPresenterImpl(get()) }
-    factory<ItemsPresenter>{ItemsPresenterImpl(get())}
-    viewModel { DetailViewModel() }
+    factory<ItemsPresenter> { ItemsPresenterImpl(get()) }
+    factory<DetailPresenter> { DetailPresenterImpl() }
 }
 
 fun App.initKoin() {
