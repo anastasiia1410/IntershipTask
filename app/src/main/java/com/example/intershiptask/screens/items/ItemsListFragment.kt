@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.intershiptask.core.BaseFragment
@@ -11,6 +12,7 @@ import com.example.intershiptask.core.Service.Companion.NOTIFICATION_ID
 import com.example.intershiptask.databinding.FragmentListItemsBinding
 import com.example.intershiptask.utils.createNotification
 import com.example.intershiptask.utils.notificationManager
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ItemsListFragment : BaseFragment<FragmentListItemsBinding>() {
@@ -32,16 +34,23 @@ class ItemsListFragment : BaseFragment<FragmentListItemsBinding>() {
             rvRecycler.adapter = adapter
         }
 
-        adapter.submitList(viewModel.itemList)
+        lifecycleScope.launch {
+            viewModel.itemsStatesFlow.collect { state ->
+                adapter.submitList(state.items)
+            }
+        }
+
+        viewModel.handleEvent(ItemEvents.ShowList)
 
         adapter.onItemClick = { item ->
+            viewModel.handleEvent(ItemEvents.OpenDetailItemById(item.id))
             val updatedNotification =
                 createNotification(requireContext(), item.id)
             requireContext().notificationManager.notify(NOTIFICATION_ID, updatedNotification)
-            viewModel.saveId(item.id)
             val action =
                 ItemsListFragmentDirections.actionItemsListFragmentToDetailItemFragment(item.id)
             findNavController().navigate(action)
+
         }
     }
 }

@@ -8,12 +8,14 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.example.intershiptask.R
 import com.example.intershiptask.core.Service
 import com.example.intershiptask.databinding.ActivityMainBinding
 import com.example.intershiptask.screens.items.ItemsListFragmentDirections
 import com.example.intershiptask.utils.ACTIVITY_ACTION
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -44,27 +46,36 @@ class MainActivity : AppCompatActivity() {
         if (!viewModel.isServiceRunning && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
+
+        lifecycleScope.launch {
+            viewModel.mainNavigationFlow.collect { event ->
+                when (event) {
+                    is MainNavigationEvent.NavigateToDetailFragment -> navigateToDetailItem(
+                        event.id
+                    )
+
+                    is MainNavigationEvent.NavigateToItemListFragment -> navigateToItemList()
+                }
+            }
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         if (intent?.action == ACTIVITY_ACTION) {
-            viewModel.setIdValue()
-            navigate(viewModel.idValue)
+            viewModel.handleEvent(MainEvent.OpenDetailItemOrListFromNotify)
         }
     }
 
-    private fun navigate(id: Int) {
+    private fun navigateToDetailItem(itemId: Int) {
         val navController = findNavController(R.id.fcMain)
-        if (id != -1) {
-            val action =
-                ItemsListFragmentDirections.actionItemsListFragmentToDetailItemFragment(
-                    id
-                )
-            navController.navigate(action)
-        } else {
-            navController.navigate(R.id.itemsListFragment)
-        }
+        val action = ItemsListFragmentDirections.actionItemsListFragmentToDetailItemFragment(itemId)
+        navController.navigate(action)
+    }
+
+    private fun navigateToItemList() {
+        val navController = findNavController(R.id.fcMain)
+        navController.navigate(R.id.itemsListFragment)
     }
 }
 
