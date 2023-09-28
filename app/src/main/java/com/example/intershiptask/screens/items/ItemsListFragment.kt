@@ -34,15 +34,16 @@ class ItemsListFragment : BaseFragment<FragmentListItemsBinding>(), ItemsView {
         }
 
         presenter.attachView(this)
-        showItemsList()
+        val itemsList = presenter.itemList
+        showItemsList(itemsList)
 
         adapter.onItemClick = { item ->
             presenter.onItemClick(item)
         }
     }
 
-    override fun showItemsList() {
-        adapter.submitList(presenter.itemList)
+    override fun showItemsList(itemsList: List<Item>) {
+        adapter.submitList(itemsList)
     }
 
     override fun handlerClick(item: Item) {
