@@ -6,5 +6,7 @@ interface ItemsPresenter {
     val itemList : List<Item>
     fun attachView(view: ItemsView)
 
+    fun loadItemsList()
+
     fun onItemClick(item: Item)
 }

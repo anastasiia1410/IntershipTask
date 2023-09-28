@@ -34,8 +34,7 @@ class ItemsListFragment : BaseFragment<FragmentListItemsBinding>(), ItemsView {
         }
 
         presenter.attachView(this)
-        val itemsList = presenter.itemList
-        showItemsList(itemsList)
+        presenter.loadItemsList()
 
         adapter.onItemClick = { item ->
             presenter.onItemClick(item)

@@ -12,6 +12,10 @@ class ItemsPresenterImpl(private val preference: AppPreference) : ItemsPresenter
         this.view = view
     }
 
+    override fun loadItemsList() {
+        view.showItemsList(itemList)
+    }
+
     override fun onItemClick(item: Item) {
         preference.saveId(item.id)
         view.handlerClick(item)
