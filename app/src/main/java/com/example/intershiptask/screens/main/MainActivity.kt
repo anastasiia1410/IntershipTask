@@ -47,17 +47,17 @@ class MainActivity : AppCompatActivity() {
             requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
 
-        lifecycleScope.launch {
-            viewModel.mainNavigationFlow.collect { event ->
-                when (event) {
-                    is MainNavigationEvent.NavigateToDetailFragment -> navigateToDetailItem(
-                        event.id
-                    )
-
-                    is MainNavigationEvent.NavigateToItemListFragment -> navigateToItemList()
-                }
-            }
-        }
+//        lifecycleScope.launch {
+//            viewModel.mainNavigationFlow.collect { event ->
+//                when (event) {
+//                    is MainNavigationEvent.NavigateToDetailFragment -> navigateToDetailItem(
+//                        event.id
+//                    )
+//
+//                    is MainNavigationEvent.NavigateToItemListFragment -> navigateToItemList()
+//                }
+//            }
+//        }
     }
 
     override fun onNewIntent(intent: Intent?) {

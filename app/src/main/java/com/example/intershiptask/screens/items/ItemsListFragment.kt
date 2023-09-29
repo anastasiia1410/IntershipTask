@@ -35,23 +35,24 @@ class ItemsListFragment : BaseFragment<FragmentListItemsBinding>() {
         }
 
         lifecycleScope.launch {
-            viewModel.itemsStatesFlow.collect { state ->
+            viewModel.state.collect { state ->
                 adapter.submitList(state.items)
             }
         }
 
-        viewModel.handleEvent(ItemEvents.ShowList)
+        viewModel.showList()
 
-        adapter.onItemClick = { item ->
-            viewModel.handleEvent(ItemEvents.OpenDetailItemById(item.id))
-            val updatedNotification =
-                createNotification(requireContext(), item.id)
-            requireContext().notificationManager.notify(NOTIFICATION_ID, updatedNotification)
-            val action =
-                ItemsListFragmentDirections.actionItemsListFragmentToDetailItemFragment(item.id)
-            findNavController().navigate(action)
 
-        }
+//        adapter.onItemClick = { item ->
+//            viewModel.handleEvent(ItemEvents.OpenDetailItemById(item.id))
+//            val updatedNotification =
+//                createNotification(requireContext(), item.id)
+//            requireContext().notificationManager.notify(NOTIFICATION_ID, updatedNotification)
+//            val action =
+//                ItemsListFragmentDirections.actionItemsListFragmentToDetailItemFragment(item.id)
+//            findNavController().navigate(action)
+//
+//        }
     }
 }
 

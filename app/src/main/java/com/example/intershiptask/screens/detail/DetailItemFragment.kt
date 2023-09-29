@@ -12,7 +12,7 @@ import com.example.intershiptask.databinding.FragmentDetailItemBinding
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DetailItemFragment : BaseFragment<FragmentDetailItemBinding>() {
+class DetailItemFragment : BaseFragment<FragmentDetailItemBinding>(){
     private val viewModel by viewModel<DetailViewModel>()
     private val args by navArgs<DetailItemFragmentArgs>()
 
