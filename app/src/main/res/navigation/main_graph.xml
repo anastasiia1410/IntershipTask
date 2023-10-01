@@ -17,9 +17,5 @@
         android:id="@+id/detailItemFragment"
         android:name="com.example.intershiptask.screens.detail.DetailItemFragment"
         android:label="DetailItemFragment"
-        tools:layout="@layout/fragment_detail_item">
-        <argument
-            android:name="id"
-            app:argType="integer" />
-    </fragment>
+        tools:layout="@layout/fragment_detail_item"/>
 </navigation>

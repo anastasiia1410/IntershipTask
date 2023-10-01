@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.intershiptask.core.BaseFragment
@@ -34,25 +36,25 @@ class ItemsListFragment : BaseFragment<FragmentListItemsBinding>() {
             rvRecycler.adapter = adapter
         }
 
-        lifecycleScope.launch {
-            viewModel.state.collect { state ->
-                adapter.submitList(state.items)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.state.collect { state ->
+                    adapter.submitList(state.items)
+                }
             }
         }
 
         viewModel.showList()
 
-
-//        adapter.onItemClick = { item ->
-//            viewModel.handleEvent(ItemEvents.OpenDetailItemById(item.id))
-//            val updatedNotification =
-//                createNotification(requireContext(), item.id)
-//            requireContext().notificationManager.notify(NOTIFICATION_ID, updatedNotification)
-//            val action =
-//                ItemsListFragmentDirections.actionItemsListFragmentToDetailItemFragment(item.id)
-//            findNavController().navigate(action)
-//
-//        }
+        adapter.onItemClick = { item ->
+            viewModel.getItemById(item.id)
+            val updatedNotification =
+                createNotification(requireContext(), item.id)
+            requireContext().notificationManager.notify(NOTIFICATION_ID, updatedNotification)
+            val action =
+                ItemsListFragmentDirections.actionItemsListFragmentToDetailItemFragment()
+            findNavController().navigate(action)
+        }
     }
 }
 

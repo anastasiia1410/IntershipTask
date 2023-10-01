@@ -4,7 +4,7 @@ import com.example.intershiptask.screens.entity.Item
 
 data class ItemStates(
     val items: List<Item>,
-    val chooseId: Int?,
+    val chooseId: Int,
 ){
     companion object{
         fun initial() : ItemStates{

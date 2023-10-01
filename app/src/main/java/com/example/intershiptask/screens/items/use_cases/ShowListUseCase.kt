@@ -1,7 +1,9 @@
-package com.example.intershiptask.screens.items
+package com.example.intershiptask.screens.items.use_cases
 
 import com.example.intershiptask.core.UseCase
 import com.example.intershiptask.screens.entity.Item
+import com.example.intershiptask.screens.items.ItemEvents
+import com.example.intershiptask.screens.items.ItemStates
 
 class ShowListUseCase : UseCase<ItemEvents, ItemStates> {
     override fun canHandle(event: ItemEvents): Boolean {
@@ -9,10 +11,6 @@ class ShowListUseCase : UseCase<ItemEvents, ItemStates> {
     }
 
     override fun invoke(event: ItemEvents, state: ItemStates): ItemEvents {
-        var items: List<Item> = emptyList()
-        if (event is ItemEvents.ShowList) {
-            items = Item.getItems()
-        }
-        return ItemEvents.ShowList
+        return ItemEvents.ShowList(Item.getItems())
     }
 }
