@@ -13,7 +13,7 @@ class SaveItemIdUseCase(private val appPreference: AppPreference) :
 
     override fun invoke(event: ItemEvents, state: ItemStates): ItemEvents {
         return (event as? ItemEvents.SaveId)?.let {
-            appPreference.saveId(state.chooseId)
+             appPreference.saveId(state.chooseId)
             return ItemEvents.None
         } ?: ItemEvents.Error("Wrong event type : $event")
     }

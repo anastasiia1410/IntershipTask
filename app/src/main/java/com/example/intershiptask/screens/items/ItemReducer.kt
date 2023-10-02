@@ -9,7 +9,7 @@ class ItemReducer : Reducer<ItemEvents, ItemStates> {
             is ItemEvents.GetList -> state
 
             is ItemEvents.ShowList ->
-                state.copy(items = event.items, chooseId = state.chooseId)
+                state.copy(items = event.items)
 
             is ItemEvents.SaveId ->
                 ItemStates(items = state.items, chooseId = event.id)

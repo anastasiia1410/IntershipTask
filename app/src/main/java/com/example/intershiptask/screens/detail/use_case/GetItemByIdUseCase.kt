@@ -14,7 +14,8 @@ class GetItemByIdUseCase(private val appPreference: AppPreference) :
 
     override fun invoke(event: DetailEvent, state: DetailState): DetailEvent {
         return (event as? DetailEvent.GetItemById)?.let {
-            val item = Item.getItems().find { it.id == appPreference.id }
+            val saveId = appPreference.id
+            val item = Item.getItems().find { it.id == saveId }
                 ?: return DetailEvent.Error("item not find")
             return DetailEvent.ItemReceived(item)
         } ?: DetailEvent.Error("wrong ")
