@@ -1,14 +1,22 @@
 package com.example.intershiptask.screens.items
 
 import com.example.intershiptask.core.Reducer
-import com.example.intershiptask.screens.entity.Item
 
 class ItemReducer : Reducer<ItemEvents, ItemStates> {
     override fun reduce(event: ItemEvents, state: ItemStates): ItemStates {
-        return if (event is ItemEvents.ShowList) {
-            ItemStates(Item.getItems(), state.chooseId)
-        } else {
-            ItemStates(state.items, state.chooseId)
+        return when (event) {
+
+            is ItemEvents.GetList -> state
+
+            is ItemEvents.ShowList ->
+                state.copy(items = event.items, chooseId = state.chooseId)
+
+            is ItemEvents.SaveId ->
+                ItemStates(items = state.items, chooseId = event.id)
+
+            is ItemEvents.None -> state
+
+            is ItemEvents.Error -> state
         }
     }
 }

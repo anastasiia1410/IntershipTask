@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 abstract class BaseViewModel<Event, State>(
-    private val getUseCaseForEvent: GetUseCaseByEvent<Event, State>,
     private val useCases: List<UseCase<Event, State>>,
     private val reducer: Reducer<Event, State>,
     initialState: State,
@@ -19,9 +18,9 @@ abstract class BaseViewModel<Event, State>(
     protected fun handleEvent(event: Event) {
         val newState = reducer.reduce(event, state.value)
         _state.value = newState
-        val useCase = getUseCaseForEvent.getUseCaseForEvent(event)
-        useCase.canHandle(event)
-        val result = useCase.invoke(event, state.value)
-        //handleEvent(result)
+        useCases.filter { it.canHandle(event) }.forEach {
+            val result = it.invoke(event, newState)
+            handleEvent(result)
+        }
     }
 }

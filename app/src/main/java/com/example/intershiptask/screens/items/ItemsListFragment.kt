@@ -47,7 +47,7 @@ class ItemsListFragment : BaseFragment<FragmentListItemsBinding>() {
         viewModel.showList()
 
         adapter.onItemClick = { item ->
-            viewModel.getItemById(item.id)
+            viewModel.saveId(item.id)
             val updatedNotification =
                 createNotification(requireContext(), item.id)
             requireContext().notificationManager.notify(NOTIFICATION_ID, updatedNotification)

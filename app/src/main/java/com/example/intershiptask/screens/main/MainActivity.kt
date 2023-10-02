@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         super.onNewIntent(intent)
         if (intent?.action == ACTIVITY_ACTION) {
             viewModel.setIdValue()
-            navigate(viewModel.state.value.chooseId)
+            navigate(viewModel.idValue)
         }
     }
 

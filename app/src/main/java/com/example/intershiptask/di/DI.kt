@@ -5,11 +5,7 @@ import android.content.SharedPreferences
 import com.example.intershiptask.core.App
 import com.example.intershiptask.core.preferences.AppPreference
 import com.example.intershiptask.core.preferences.PreferenceImpl
-import com.example.intershiptask.core.GetUseCaseByEvent
-import com.example.intershiptask.screens.items.use_cases.find_use_case.GetUseCaseByItemEvent
 import com.example.intershiptask.screens.detail.DetailViewModel
-import com.example.intershiptask.screens.items.ItemEvents
-import com.example.intershiptask.screens.items.ItemStates
 import com.example.intershiptask.screens.items.ItemsViewModel
 import com.example.intershiptask.screens.main.MainViewModel
 import org.koin.android.ext.koin.androidContext
@@ -27,7 +23,6 @@ private val appModule = module {
         )
     }
     single<AppPreference> { PreferenceImpl(get()) }
-    single<GetUseCaseByEvent<ItemEvents, ItemStates>> { GetUseCaseByItemEvent() }
 
 
     viewModel { MainViewModel(get()) }

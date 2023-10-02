@@ -1,20 +1,14 @@
 package com.example.intershiptask.screens.main
 
-import com.example.intershiptask.core.BaseViewModel
+import androidx.lifecycle.ViewModel
 import com.example.intershiptask.core.preferences.AppPreference
-import com.example.intershiptask.screens.main.use_case.OpenNotifyUseCase
-import com.example.intershiptask.screens.main.use_case.find_use_case.GetUseCaseByMainEvent
 
-class MainViewModel(preference: AppPreference) : BaseViewModel<MainEvent, MainState>(
-    getUseCaseForEvent = GetUseCaseByMainEvent(),
-    useCases = listOf(OpenNotifyUseCase()),
-    reducer = MainReducer(preference),
-    initialState = MainState.initial()
-) {
+class MainViewModel(private val preference: AppPreference) : ViewModel() {
     var isServiceRunning: Boolean = false
+    var idValue = 0
 
 
     fun setIdValue() {
-        handleEvent(MainEvent.NavigateFromNotify(state.value.chooseId))
+        idValue = preference.id
     }
 }
